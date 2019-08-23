@@ -1,0 +1,445 @@
+$def with (account, strike_id, make_control_plots, plots, control_plots, budget_link, df_age,df_dev,df_gen,df_video, df_pause, df_toenable, optim_type, data_used, CPV_bid_time, save_bids, VR_target,  content, content2, flag="", pause_link="")
+
+<!doctype html>
+<html>
+  <head>
+    <title>Optimization Engine</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/static/css/form2.css" />
+    
+  </head>
+     
+  <body>
+    <nav class="navbar navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+           <a class="navbar-brand" href="https://www.strikesocial.com"><!--?xml version="1.0" encoding="utf-8"?-->
+            <svg version="1.1" id="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 211 44" enable-background="new 0 0 211 44" xml:space="preserve">
+            <g>
+                <path fill="#FF612A" d="M15.7,6.8c4.1-0.1,6.6,3.9,7.2,5.4l3.9-2.5c0,0-2.6-7.7-10.6-7.7C7.2,2,5.2,8.8,5.2,8.8
+                    c0-0.1-2.6,5.6,0.7,10.4c1.4,2.1,3.9,3.9,8.8,4.6c5.7,0.9,7.2,3.6,6.9,7c-0.2,2.2-2.2,6.3-8.2,6.2c-4-0.1-6.1-2.3-7.3-4.9l-4,2.6
+                    c1.9,4.3,5.8,7,10.9,7.2c0,0,7.3,0.5,11.1-4.1c0,0,4.7-4.9,2-12c-1.4-3.6-4.8-6.3-10.5-6.9c-1.2-0.1-6.6-1-6.4-5.4
+                    C9.1,13.5,9.1,7,15.7,6.8z"></path>
+                <polygon fill="#FF612A" points="40.5,8.1 51.4,8.1 48.8,41.1 54,41.1 56.6,8.1 67.4,8.1 67.9,3.1 40.9,3.1     "></polygon>
+                <path fill="#FF612A" d="M103.9,19.8c1.7-4.2,1.4-8.4,0.1-11c-1.3-2.5-4.2-5.6-9.7-5.6H82.9l-3,38h5.2l1.2-14.5h4.7l8.5,14.5h6.2
+                    l-9.2-15.1C98.3,25.6,102.4,23.6,103.9,19.8z M86.7,21.5L87.9,8c0,0,4.2-0.1,6.6,0.1c1.7,0.1,5.6,1.9,5.1,6.6
+                    c-0.3,3.8-2.5,5.5-4.3,6.1C92.1,21.9,86.7,21.5,86.7,21.5z"></path>
+                <polygon fill="#FF612A" points="121.8,41.1 127,41.1 130,3.1 124.8,3.1   "></polygon>
+                <polygon fill="#FF612A" points="166.9,3.1 154.3,18.4 152.3,19.9 153.6,3.1 148.5,3.1 145.5,41.1 150.5,41.1 151.7,26.4
+                    155.5,23.7 166.2,41.1 172.3,41.1 159.5,19.9 173.4,3.1   "></polygon>
+                <polygon fill="#FF612A" points="208.6,8.2 209,3.1 189.2,3.1 186.2,41.1 207.7,41.1 208.1,35.9 191.6,35.9 192.7,23.9 205,23.9
+                    205.5,18.8 193.1,18.8 194.1,8.2     "></polygon>
+            </g>
+            </svg>
+             <span class="">Optimization Engine</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="content" class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default optimization-form">
+              <div class="panel-heading">
+                <h2>Optimization Form</h2>
+              </div>
+              <div class="panel-body">
+                <form id="form" class="form" action="/" method="post"> 
+                    $:content.render()
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div id="result">
+        <div class="row">
+          <div class="col-md-12 tableData" id="summary">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Current Status Summary</h3>
+              </div>
+              <div class="panel-body">
+                <table id="summaryTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Budget per day</th>
+                      <th>Budget Spent Today</th>
+                      <th>Budget Spent Total</th>
+                      <th>Today's budget status (%)</th>
+                      <th>Yesterday's budget status (%)</th>
+                      <th>Media Order</th>
+                      <th>CPV Max adj.</th>
+                      <th>CPV Total</th>
+                      <th>VR Total</th>
+                      <th>View Order</th>
+                      <th>Views Total</th>                         
+                      <th>Days Left</th>
+                      <th>Days Passed</th>
+                      <th>Last update</th> 
+                      <th>Paused camp.</th>                         
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 tableData" id="optimization_result">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Optimization Result</h3>
+              </div>
+              <div class="panel-body">
+                <table id="optimization_view_table" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                       <th>Budget</th>
+                        <th>Views</th>
+                        <th>VR</th>
+                        <th>VCR</th>
+                        <th>CTR</th>
+                        <th>CPV</th>
+                         <!-- <th>Total Budget Change</th> -->
+                        <th>Eff. Views Change</th>
+                          <!-- <th>Max p.c. Budget Change</th> -->
+                        <th>VR (VCR, CTR) importance</th>                        
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="row" >
+          <div class="col-md-12 tableData" id="budget">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Optimized Budget (and daily average performance)</h3>
+              </div>
+              <h5>&nbsp &nbsp &nbsp Optimization: $optim_type</h5>
+              <!-- <h5>&nbsp &nbsp &nbsp Data used: $data_used</h5> -->
+              <h5>&nbsp &nbsp &nbsp Last CPV bid adj. in data base: $CPV_bid_time</h5>
+              <!-- <h5>&nbsp &nbsp &nbsp Target VR: $VR_target (this run) </h5> -->
+              <div class="panel-body">
+                <table id="budgetTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Campaign</th>
+                      <th>Campaign ID</th>
+                      <th>Status</th>
+                      <th>Network</th>
+                      <th>Placement</th>
+                      <th>Video ID</th>
+                      <th>Device</th>
+                      <th>Age Range</th>
+                      <th>Gender</th>
+                      <th>&#60Impressions&#62</th>
+                      <th>&#60Views&#62</th>
+                      <th>&#60Views 100%&#62</th>
+                      <th>&#60Clicks&#62</th>   
+                      <th>&#60VR&#62</th>
+                      <th>&#60VCR&#62</th>
+                      <th>&#60CTR&#62</th>
+                      <th>&#60CPV&#62</th>
+                      <th>&#60Cost&#62</th>
+                      <th>Max Budget</th>
+                      <th><b>Score/Cost</b></th>
+                      <th><b>Opt. Score (%)</b></th>
+                      <th><b>Opt. Budget</b></th>
+                      <th><b>CPV Adj.</b></th>
+                      <th><b>CPV Max</b></th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      $if make_control_plots!='None':
+          <div id="charts">
+            <div class="panel panel-default optimization-form">
+              <div class="panel-heading">
+                <h2>Plots</h2>
+              </div>
+              <div class="panel-body">
+                <div class="chart">
+                  <div class="budget">
+                    <!-- <h3>Optimized views vs budget</h3> -->
+                  </div>
+      		        <div class="main_plots"></div>
+                  <div class="control_plots"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <div class="modal " id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-header">
+          <h1>Processing...</h1>
+      </div>
+      <div class="modal-body">
+          <div class="progress progress-striped active">
+              <div class="bar" style="width: 100%;"></div>
+          </div>
+      </div>
+    </div> 
+
+  </body>
+
+
+<P ALIGN=RIGHT>
+<a href="$budget_link">Download budget as CSV file &nbsp</a>
+</P> 
+
+$if save_bids:
+  <form id="putToDB" class="form" action="/put-to-DB/" method="post" style="float: right; clear: both; overflow: hidden; width: 15%"> 
+    $:content2.render()
+  </form>
+
+$if len(df_pause)>0:
+            <table style="width:90%", align="center" border="1">
+            <caption style="text-align:center"><span style="font-weight:bold"><font size="5", color="black">Campaigns to pause</caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3">N</th>
+                    <th style="text-align:center"><font size="3">Campaign</th>
+                    <th style="text-align:center"><font size="3">Campaign ID </th>
+                    <th style="text-align:center"><font size="3">Status </th>
+                    <th style="text-align:center"><font size="3">Impressions</th>
+                    <th style="text-align:center"><font size="3">Views</th>
+                    <th style="text-align:center"><font size="3">Clicks</th>
+                    <th style="text-align:center"><font size="3">  VR  </th>
+                    <th style="text-align:center"><font size="3">  VCR  </th>
+                    <th style="text-align:center"><font size="3">  CTR </th>
+                    <th style="text-align:center"><font size="3">  CPV </th>
+                    <th style="text-align:center"><font size="3">  Cost </th>
+                    <th style="text-align:center"><font size="3">Score/Cost</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_pause)):
+                      <tr>
+                      <td align="center"> $i</td>
+                      <td align="center", width="25%", font-size="8px">$df_pause["campaign"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_pause["campaign_id"].iloc[i]</td> 
+                      <td align="center"><font size="2">$df_pause["campaign_state"].iloc[i]</td> 
+                      <td align="center"><font size="2">$int(df_pause["impressions"].iloc[i])</td>  
+                      <td align="center"><font size="2">$int(df_pause["views"].iloc[i])</td> 
+                      <td align="center"><font size="2">$int(df_pause["clicks"].iloc[i])</td>  
+                      <td align="center"><font size="2">$df_pause["VR"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_pause["VCR"].iloc[i]</td>                        
+                      <td align="center"><font size="2">$df_pause["CTR"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_pause["CPV"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_pause["cost"].iloc[i]</td>   
+                      <td align="center"><font size="2">$df_pause["Score_to_cost"].iloc[i]</td>                    
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+           <!--
+           <P ALIGN=RIGHT>
+           <a href="$pause_link">Download campaigns to pause as CSV file &nbsp</a>
+           </P>
+           -->
+
+$if len(df_toenable)>1000:
+            <table style="width:90%", align="center" border="1">
+            <caption style="text-align:center"><span style="font-weight:bold"><font size="5", color="black">Campaigns to enable</b></caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3">N</th>
+                    <th style="text-align:center"><font size="3">Campaign</th>
+                    <th style="text-align:center"><font size="3">Campaign ID </th>
+                    <th style="text-align:center"><font size="3">Status </th>
+                    <th style="text-align:center"><font size="3">Impressions</th>
+                    <th style="text-align:center"><font size="3">Views</th>
+                    <th style="text-align:center"><font size="3">Clicks</th>
+                    <th style="text-align:center"><font size="3">  VR  </th>
+                    <th style="text-align:center"><font size="3">  VCR  </th>
+                    <th style="text-align:center"><font size="3">  CTR </th>
+                    <th style="text-align:center"><font size="3">  CPV </th>
+                    <th style="text-align:center"><font size="3">  Cost </th>
+                    <th style="text-align:center"><font size="3">Score/Cost</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_toenable)):
+                      <tr>
+                      <td align="center">$i</td>
+                      <td align="center", width="25%", font-size="8px">$df_toenable["campaign"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_toenable["campaign_id"].iloc[i]</td> 
+                      <td align="center"><font size="2">$df_toenable["campaign_state"].iloc[i]</td> 
+                      <td align="center"><font size="2">$int(df_toenable["impressions"].iloc[i])</td>  
+                      <td align="center"><font size="2">$int(df_toenable["views"].iloc[i])</td> 
+                      <td align="center"><font size="2">$int(df_toenable["clicks"].iloc[i])</td>  
+                      <td align="center"><font size="2">$df_toenable["VR"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_toenable["VCR"].iloc[i]</td>                        
+                      <td align="center"><font size="2">$df_toenable["CTR"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_toenable["CPV"].iloc[i]</td>  
+                      <td align="center"><font size="2">$df_toenable["cost"].iloc[i]</td>   
+                      <td align="center"><font size="2">$df_toenable["Score_to_cost"].iloc[i]</td>                    
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+           <!--
+           <P ALIGN=RIGHT>
+           <a href="$enable_link">Download campaigns to enable as CSV file &nbsp</a>
+           </P> 
+           --> 
+
+  <script>
+    flag = "$flag";
+    account_id = "$account";
+    strike_id = "$strike_id";
+    plots = "$plots";
+    make_control_plots = "$make_control_plots";
+	  control_plots = "$control_plots";
+  </script>
+
+  <script   src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/js/waiting.js"></script>
+  <script type="text/javascript" src="/static/js/form2.js"></script>
+  <script type="text/javascript" src="/static/js/dataTables.hideEmptyColumns.min.js"></script>
+
+
+ $if len(df_dev)>0:
+            <table style="width:80%", align="center" border="1">
+            <caption align="center"><font size="5"><b>Budget Optimization by Devices</b></caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3", width="26%">Device</th>
+                    <th style="text-align:center"><font size="3", width="10%">Views</th>
+                    <th style="text-align:center"><font size="3", width="10%">  VR  </th>
+                    <th style="text-align:center"><font size="3", width="10%">  CTR  </th>
+                    <th style="text-align:center"><font size="3", width="10%"> CPV </th>
+                    <th style="text-align:center"><font size="3", width="10%">Cost</th>
+                    <th style="text-align:center"><font size="3", width="10%">Opt.Budget</th>
+                    <th style="text-align:center"><font size="3", width="7%">Opt. Budget Fraction</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_dev)):
+                      <tr>
+                      <td align="center", width="20%">$df_dev["device"].iloc[i]</td>  
+                      <td align="center">$df_dev["views"].iloc[i]</td>
+                      <td align="center">$df_dev["VR"].iloc[i]</td>
+                      <td align="center">$df_dev["CTR"].iloc[i]</td>
+                      <td align="center">$df_dev["CPV"].iloc[i]</td>
+                      <td align="center", width="10%">$df_dev["cost"].iloc[i]</td>
+                      <td align="center", width="10%">$df_dev["Budget"].iloc[i]</td>
+                      <td align="center", width="10%"><b>$df_dev["B_frac"].iloc[i]</b></td>
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+
+ $if len(df_age)>0:
+            <table style="width:80%", align="center" border="1">
+            <caption align="center"><font size="5"><b>Budget Optimization by Age Ranges</b></caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3", width="26%">Age Range</th>
+                    <th style="text-align:center"><font size="3", width="10%">Views</th>
+                    <th style="text-align:center"><font size="3", width="10%">  VR  </th>
+                    <th style="text-align:center"><font size="3", width="10%">  CTR  </th>
+                    <th style="text-align:center"><font size="3", width="10%"> CPV </th>
+                    <th style="text-align:center"><font size="3", width="10%">Cost</th>
+                    <th style="text-align:center"><font size="3", width="10%">Opt.Budget</th>
+                    <th style="text-align:center"><font size="3", width="7%">Opt. Budget Fraction</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_age)):
+                      <tr>
+                      <td align="center", width="20%">$df_age["age_range"].iloc[i]</td>  
+                      <td align="center">$df_age["views"].iloc[i]</td>
+                      <td align="center">$df_age["VR"].iloc[i]</td>
+                      <td align="center">$df_age["CTR"].iloc[i]</td>
+                      <td align="center">$df_age["CPV"].iloc[i]</td>
+                      <td align="center", width="10%">$df_age["cost"].iloc[i]</td>
+                      <td align="center", width="10%">$df_age["Budget"].iloc[i]</td>
+                      <td align="center", width="10%"><b>$df_age["B_frac"].iloc[i]</b></td>
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+
+ $if len(df_gen)>0:
+            <table style="width:80%", align="center" border="1">
+            <caption align="center"><font size="5"><b>Budget Optimization by Genders</b></caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3", width="26%">Gender</th>
+                    <th style="text-align:center"><font size="3", width="10%">Views</th>
+                    <th style="text-align:center"><font size="3", width="10%">  VR  </th>
+                    <th style="text-align:center"><font size="3", width="10%">  CTR  </th>
+                    <th style="text-align:center"><font size="3", width="10%"> CPV </th>
+                    <th style="text-align:center"><font size="3", width="10%">Cost</th>
+                    <th style="text-align:center"><font size="3", width="10%">Opt.Budget</th>
+                    <th style="text-align:center"><font size="3", width="7%">Opt. Budget Fraction</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_gen)):
+                      <tr>
+                      <td align="center", width="20%">$df_gen["gender"].iloc[i]</td>  
+                      <td align="center">$df_gen["views"].iloc[i]</td>
+                      <td align="center">$df_gen["VR"].iloc[i]</td>
+                      <td align="center">$df_gen["CTR"].iloc[i]</td>
+                      <td align="center">$df_gen["CPV"].iloc[i]</td>
+                      <td align="center", width="10%">$df_gen["cost"].iloc[i]</td>
+                      <td align="center", width="10%">$df_gen["Budget"].iloc[i]</td>
+                      <td align="center", width="10%"><b>$df_gen["B_frac"].iloc[i]</b></td>
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+
+$if len(df_video)>0:
+            <table style="width:80%", align="center" border="1">
+            <caption align="center"><font size="5"><b>Budget Optimization by Creatives</b></caption>
+                  <tr>
+                    <th style="text-align:center"><font size="3", width="26%">Video ID</th>
+                    <th style="text-align:center"><font size="3", width="10%">Views</th>
+                    <th style="text-align:center"><font size="3", width="10%">  VR  </th>
+                    <th style="text-align:center"><font size="3", width="10%">  CTR  </th>
+                    <th style="text-align:center"><font size="3", width="10%"> CPV </th>
+                    <th style="text-align:center"><font size="3", width="10%">Cost</th>
+                    <th style="text-align:center"><font size="3", width="10%">Opt.Budget</th>
+                    <th style="text-align:center"><font size="3", width="7%">Opt. Budget Fraction</th>
+                  </tr>
+                  <tr>
+                    $for i in range(len(df_video)):
+                      <tr>
+                      <td align="center", width="20%">$df_video["video_id"].iloc[i]</td>  
+                      <td align="center">$df_video["views"].iloc[i]</td>
+                      <td align="center">$df_video["VR"].iloc[i]</td>
+                      <td align="center">$df_video["CTR"].iloc[i]</td>
+                      <td align="center">$df_video["CPV"].iloc[i]</td>
+                      <td align="center", width="10%">$df_video["cost"].iloc[i]</td>
+                      <td align="center", width="10%">$df_video["Budget"].iloc[i]</td>
+                      <td align="center", width="10%"><b>$df_video["B_frac"].iloc[i]</b></td>
+                      </tr>
+                  </tr>
+           </table>
+           <br>
+
+<br><br>
+
+</html>
+

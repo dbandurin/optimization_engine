@@ -1,0 +1,23 @@
+$def with (content)
+
+<html>
+    <head>
+        <title>Optimization Engine</title>
+    </head>
+<body>
+
+<h1 "color: black; font-size: 4em;">Optimization Results</h1>
+
+<style type="text/css">
+body {background-color:#F0F0F0}
+h1   {color:blue}
+p    {color:green}
+td
+{
+    padding: 5px 15px 5px 15px;
+}
+</style>
+
+<form method="POST">
+	$:content.render()
+</form>	

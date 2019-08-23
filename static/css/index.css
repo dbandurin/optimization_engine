@@ -1,0 +1,130 @@
+body {
+  font-family: 'Lato', sans-serif;
+}
+h1,
+h2,
+h3, h4 {
+  font-family: 'Varela Round', sans-serif;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 20px;
+}
+.btn {
+  background: #FF612A;
+  border: 0;
+}
+.btn:hover,
+.btn:focus {
+  background: #080808;
+}
+.navbar {
+  background: #f9f9f9;
+}
+.navbar-brand #logo{
+  height: 25px;
+  width: auto;
+  float: left;
+}
+.navbar-brand span {
+  display: block;
+  margin: 5px 20px;
+  float: left;
+}
+#content {
+  margin-top: 80px;
+}
+.optimization-form h2 {
+  margin: 0;
+}
+.optimization-form #form table {
+  width: 100%;
+  font-size: 13px;
+}
+.optimization-form #form table tr {
+  float: left;
+  width: 20%;
+  padding-bottom: 15px;
+  height: 75px;
+}
+.optimization-form #form table th, 
+.optimization-form #form table td {
+  padding: 0;
+  display: block;
+  margin: 0;
+  padding-right: 25px;
+}
+.optimization-form #form table td select,
+.optimization-form #form table td input {
+  width: 100%;
+}
+.optimization-form #form table td input {
+  border: 1px solid #eee;
+  padding: 5px 3px 5px 10px;
+}
+.optimization-form #form table td select {
+  outline: 0;
+  overflow: hidden;
+  height: 30px;
+  border: 1px solid #eee;
+  padding: 5px 3px 5px 10px;
+}
+.optimization-form #form button.submit {
+  width: 100%;
+  display: block;
+}
+
+#result h3 {
+  padding: 0;
+  margin: 0;
+}
+#result .panel-body {
+  padding: 0 10px;
+}
+#result #budget .panel,
+#result #summary .panel,
+#optimization_result .panel {
+  font-size: 13px;
+  width: 100%;
+  display: none;
+}
+
+#result .tableData {
+  margin-bottom: 20px;
+}
+
+#result .table-bordered>thead>tr>td, 
+#result .table-bordered>thead>tr>th {
+  text-transform: capitalize;
+}
+#result  .dataTables_wrapper .dataTables_info ,
+#result  .dataTables_wrapper .dataTables_length {
+  float: left;
+}
+#result .dataTables_wrapper .dataTables_filter,
+#result .dataTables_wrapper .dataTables_paginate {
+  float: right;
+}
+
+#result .pagination>.active>a, 
+#result .pagination>.active>a:focus, 
+#result .pagination>.active>a:hover, 
+#result .pagination>.active>span, 
+#result .pagination>.active>span:focus, 
+#result .pagination>.active>span:hover {
+  background-color: #FF612A;
+  border-color: #FF612A;
+}
+
+#result #budgetTable_wrapper .top {
+  padding: 10px 0 35px;
+}
+#plots .panel,
+#plots .subplots {
+  display: none;
+}
+#plots .charts img {
+  margin-bottom: 20px;
+}
